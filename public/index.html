@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatroom</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center">Chatroom</h1>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <form>
+          <div class="row mb-3">
+            <div class="col">
+              <input type="text" name="name" placeholder="Name" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <input type="text" name="message" placeholder="Message" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <button id="send-message" type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <h2>Messages</h2>
+      <div id="messages" class="col"></div>
+    </div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script>
+const socket = io()
+
+socket.on('message', addMessage)
+
+function addMessage(message) {
+  $('#messages').append(`<h3>${message.name}</h3><p>${message.message}</p>`)
+}
+
+function getMessages() {
+  $.get('http://localhost:3000/messages', messages => {
+    messages.forEach(addMessage);
+  })
+}
+
+function postMessage(message) {
+  $.post('http://localhost:3000/messages', message)
+}
+
+$(() => {
+  $('#send-message').click((event) => {
+    event.preventDefault()
+
+    const message = {name: $('[name=\'name\']')[0].value, message: $('[name=\'message\']')[0].value}
+
+    postMessage(message)
+  })
+
+  getMessages();
+})
+</script>
+</body>
+</html>
