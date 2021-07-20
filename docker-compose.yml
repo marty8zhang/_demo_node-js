@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
 
@@ -9,6 +9,8 @@ services:
             - "27017:27017"
 
     server:
+        depends_on:
+            - mongodb
         container_name: tutorial_node-js_server_1
         image: egghdz/tutorial_node-js_server:latest
         build: .
