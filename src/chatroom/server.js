@@ -20,27 +20,27 @@ const Message = mongoose.model('Message', {
 })
 
 app.get('/messages', (req, res) => {
-  Message.find({}, (err, messages) => {
-    if (err) {
+  Message.find({})
+    .then((messages) => {
+      res.send(messages)
+    })
+    .catch((err) => {
       res.sendStatus(500)
-    }
-
-    res.send(messages)
-  })
+    })
 })
 
 app.post('/messages', (req, res) => {
   const message = new Message(req.body)
 
-  message.save((err) => {
-    if (err) {
+  message.save()
+    .then(() => {
+      io.emit('message', req.body)
+
+      res.sendStatus(200)
+    })
+    .catch((err) => {
       res.sendStatus(500)
-    }
-
-    io.emit('message', req.body)
-
-    res.sendStatus(200)
-  })
+    })
 })
 
 io.on('connection', (socket) => {
@@ -53,13 +53,12 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  },
-  (err) => {
-    if (err) {
-      console.log('MongoDB connection error:', err)
-    } else {
-      console.log('MongoDB connected.')
-    }
+  })
+  .then(() => {
+    console.log('MongoDB connected.')
+  })
+  .catch((err) => {
+    console.log('MongoDB connection error:', err)
   })
 
 server.listen(3000, () => {
