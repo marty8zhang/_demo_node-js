@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+
+    mongodb:
+        container_name: tutorial_node-js_mongodb_1
+        image: mongo:5
+        ports:
+            - "27017:27017"
+
+    server:
+        container_name: tutorial_node-js_server_1
+        image: egghdz/tutorial_node-js_server:latest
+        build: .
+        ports:
+            - "3000:3000"
+        command: "node /app/src/chatroom/server.js"
