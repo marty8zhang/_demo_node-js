@@ -19,28 +19,36 @@ const Message = mongoose.model('Message', {
   message: String,
 })
 
-app.get('/messages', (req, res) => {
-  Message.find({})
-    .then((messages) => {
-      res.send(messages)
-    })
-    .catch((err) => {
-      res.sendStatus(500)
-    })
+app.get('/messages', async (req, res) => {
+  try {
+    const messages = await Message.find({})
+
+    res.send(messages)
+  } catch (e) {
+    res.sendStatus(500)
+
+    return console.log('Error on getting all messages:', err)
+  } finally {
+    console.log('Getting all messages processed.')
+  }
 })
 
-app.post('/messages', (req, res) => {
-  const message = new Message(req.body)
+app.post('/messages', async (req, res) => {
+  try {
+    const message = new Message(req.body)
 
-  message.save()
-    .then(() => {
-      io.emit('message', req.body)
+    await message.save()
 
-      res.sendStatus(200)
-    })
-    .catch((err) => {
-      res.sendStatus(500)
-    })
+    io.emit('message', req.body)
+
+    res.sendStatus(200)
+  } catch (err) {
+    res.sendStatus(500)
+
+    return console.log('Error on posting a message:', err)
+  } finally {
+    console.log('Posting a message processed.')
+  }
 })
 
 io.on('connection', (socket) => {
