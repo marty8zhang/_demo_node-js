@@ -24,10 +24,25 @@ app.get('/messages', async (req, res) => {
     const messages = await Message.find({})
 
     res.send(messages)
-  } catch (e) {
+  } catch (err) {
     res.sendStatus(500)
 
     return console.log('Error on getting all messages:', err)
+  } finally {
+    console.log('Getting all messages processed.')
+  }
+})
+
+app.get('/messages/:name', async (req, res) => {
+  try {
+    const {name} = req.params
+    const messages = await Message.find({name: name})
+
+    res.send(messages)
+  } catch (err) {
+    res.sendStatus(500)
+
+    return console.log('Error on getting all messages for a user:', err)
   } finally {
     console.log('Getting all messages processed.')
   }
