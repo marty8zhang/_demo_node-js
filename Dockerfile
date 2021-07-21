@@ -9,4 +9,3 @@ EXPOSE 3000/tcp
 
 WORKDIR /app
 ADD . .
-#RUN node /app/src/chatroom/server.js
