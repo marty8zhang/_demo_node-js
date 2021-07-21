@@ -9,7 +9,7 @@ This is a tutorial demo for the technology stack:
 
 ## Prerequisites
 
-- NPM
+- Node.js
 - Docker
 - Docker Compose
 
