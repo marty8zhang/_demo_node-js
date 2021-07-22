@@ -4,9 +4,9 @@ const fs = require('fs')
 const path = require('path')
 
 const data = {
-  'title': 'Test2'
+  'title': 'Test2',
 }
 
-fs.writeFile(path.resolve(__dirname, './data_w.json'), JSON.stringify(data), err => {
+fs.writeFile(path.join(__dirname, 'data_w.json'), JSON.stringify(data), (err) => {
   console.log(err ? err : 'Write finished.')
 })
