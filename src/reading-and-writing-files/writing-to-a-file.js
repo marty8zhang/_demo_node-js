@@ -7,6 +7,6 @@ const data = {
   'title': 'Test2',
 }
 
-fs.writeFile(path.join(__dirname, 'data_w.json'), JSON.stringify(data), (err) => {
+fs.writeFile(path.join(__dirname, './dummy-data/data_w.json'), JSON.stringify(data), (err) => {
   console.log(err ? err : 'Write finished.')
 })
