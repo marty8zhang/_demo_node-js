@@ -31,7 +31,7 @@ childProcess.exec(
 
 // A Node.js process runs another Node.js process.
 childProcess.exec(
-  'node .\\src\\asynchronous-tasks-and-callbacks.js',
+  'node ..\\asynchronous-tasks-and-callbacks.js',
   (err, data, stderr) => {
     console.log('\nResult from `node ...`:')
 
